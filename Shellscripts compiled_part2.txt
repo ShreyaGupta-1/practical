@@ -1,0 +1,297 @@
+Q4 )
+
+if [ $# -lt 1 ]
+then
+echo "Missing operand. usage : $0 [integer]"
+exit 1
+fi
+
+i=2
+
+while [ $i -lt $1 ]
+do
+  if [ `expr $1 % $i` -eq 0 ]
+  then
+      echo "$1 is not a prime number"
+      echo "Since it is divisible by $i"
+      exit 0
+  fi
+  ((i=i+1))
+done
+
+echo "$1 is a prime number "
+
+-----------------------------------------------------------------------------
+
+Q 5)
+
+for month in $@
+do 
+   m=`echo $month | tr '[A-Z]' '[a-z]'`
+   case $m in
+   jan* )       m=1   ;;
+   feb* )       m=2   ;;
+   mar* )       m=3   ;;
+   apr* )       m=4   ;;
+   may* )       m=5   ;;
+   jun* )       m=6   ;;
+   jul* )       m=7   ;;
+   aug* )       m=8   ;;
+   sep* )       m=9   ;;
+   oct* )       m=10  ;;
+   nov* )       m=11  ;;
+   dec* )       m=12  ;;
+   * ) echo -e "Invalid Month\n"
+   esac
+   set `date` ; y=$6
+   cal $m $y
+done
+
+------------------------------------------------------------------------
+Q 6)
+
+first=`echo $* | tr -s "." | cut -d"." -f1`
+last=`echo $* | tr -s "." | cut -d"." -f2`
+
+month1=`echo $first | tr '[a-z]' '[A-Z]'`
+
+case $month1 in
+JAN) m1=1;;
+FEB) m1=2;;
+MAR) m1=3;;
+APR) m1=4;;
+MAY) m1=5;;
+JUN) m1=6;;
+JUL) m1=7;;
+AUG) m1=8;;
+SEP) m1=9;;
+OCT) m1=10;;
+NOV) m1=11;;
+DEC) m1=12;;
+esac
+
+month2=`echo $last | tr '[a-z]' '[A-Z]'`
+
+
+case $month2 in
+JAN) m2=1;;
+FEB) m2=2;;
+MAR) m2=3;;
+APR) m2=4;;
+MAY) m2=5;;
+JUN) m2=6;;
+JUL) m2=7;;
+AUG) m2=8;;
+SEP) m2=9;;
+OCT) m2=10;;
+NOV) m2=11;;
+DEC) m2=12;;
+esac
+
+
+if [ $m1 -ge $m2 ]
+then
+ echo -e "Invalid Range of Month \n"
+else
+ set `date`
+ y=`echo $6`
+  for((i=m1;i<=m2;i++))
+   do
+    cal $i $y
+   done
+fi
+--------------------------------------------------------------------------------
+
+Q 9 )
+
+#To display the sorted ouput of "who" command along with the total number of users
+
+nusers=`who | wc -l`
+
+echo "The sorted result of who command is as follows:"
+
+who | sort
+
+echo "----------------------------------------------"
+
+echo "The total number of users are : $nusers"
+
+-------------------------------------------------------------------------------
+
+Q 11)
+
+function compare()
+{
+	echo ""
+	cmp $fname1 $fname2
+	val=$?
+	if [ $val -eq 0 ]
+	#the files are same
+	then
+		echo -e "\nThe files are same."
+		rm $fname2
+		echo "$fname2 has been deleted."
+	else
+		echo -e "\nThe files are different. No action required."
+	fi
+	echo "-------------------------------------------------"
+}
+
+echo "-------------------------------------------------"
+
+echo -e "Enter first filename"
+read fname1
+echo -e "\nEnter second filename"
+read fname2
+
+
+
+if [ -e $fname1 -a -e $fname2 ]
+then
+	if [ "$fname1" = "$fname2" ]
+	then
+		echo -e "\nBoth files have the same name. Invalid input."
+		echo "-------------------------------------------------"
+	else
+compare
+fi
+else
+echo -e "\nOne or both files do not exist. Please try again. "
+
+echo "-------------------------------------------------"
+fi
+
+------------------------------------------------------------------------------
+
+Q 13)
+
+echo -n "Enter filename1="
+read fname1
+echo -n "Enter filename2="
+read fname2
+echo -n "Enter filename3="
+read fname3
+if [ -f $fname1 -a -f $fname2 -a -f $fname3 ]
+then
+   sort $fname1 > t1
+   sort $fname2 > t2
+   sort $fname3 > t3
+   echo -e "The sorted contents are as follows"
+   sort -m t1 t2 t3 > sm.txt
+   rm t1 t2 t3
+else
+   echo "Files with this names does not exist"
+fi 
+cat sm.txt | more | less
+
+--------------------------------------------------------------------------
+
+Q 15)
+
+echo -n "Enter A:"
+read a
+echo -n "Enter B:"
+read b
+
+reply="y"
+
+while [ $reply = "y" ]
+do
+echo "Enter 1 for addition"
+echo "Enter 2 for subtraction"
+echo "Enter 3 for division"
+echo "Enter 4 for multiplication"
+echo "Enter 5 for modulus"
+echo "Enter 6 for exit"
+
+echo -n "Enter your choice:"
+read ch
+
+case $ch in
+1) ((res=a+b)) ; echo "Result is $res";;
+2) ((res=a-b)) ; echo "Result is $res";;
+3) ((res=a/b)) ; echo "Result is $res";;
+4) ((res=a*b)) ; echo "Result is $res";;
+5) ((res=a%b)) ; echo "Result is $res";;
+6) exit 0;;
+*) echo "Please enter (1-6)"
+esac
+
+echo -n "Enter y to continue"
+read rep
+
+if [ $rep != "y" ]
+then
+   exit 1
+fi
+done
+----------------------------------------------------------------------------
+
+Q 16)
+
+echo "Input number"
+read no
+echo "Input power"
+read power
+
+ans=1
+for ((counter=1;counter<=power;counter++))
+do
+        ((ans=ans*no))
+done
+
+echo "$no power of $power is $ans"
+------------------------------------------------------------------------------
+
+Q 18)
+
+echo "Enter a number: "
+read n
+
+temp=$n
+sum=0
+
+while [ $n -gt 0 ]
+do
+((rem=n%10))
+((sum=sum + rem*rem*rem))
+((n=n/10))
+done
+
+if [ $sum -eq $temp ]
+then
+echo "It is an Armstrong Number."
+else
+echo "It is not an Armstrong Number."
+fi
+
+----------------------------------------------------------------------------
+
+Q reverse)
+
+echo -n "Enter number : "
+read n
+ 
+rev=0
+ 
+# use while loop to caclulate the sum of all digits
+while [ $n -gt 0 ]
+do
+    ((rem=n % 10 )) # get Remainder 
+    ((n=n / 10 ))  # get next digit
+    ((rev=rev*10 + rem )) # calculate sum of digit
+done
+echo  "Reverse  is $rev"
+-------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

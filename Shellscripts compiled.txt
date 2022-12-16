@@ -1,0 +1,463 @@
+Ques1  
+
+#Write a shell script to modify the "cal" command 
+to display calendars of the specified months.
+
+for month in $@
+do 
+   m=`echo $month | tr '[A-Z]' '[a-z]'`
+   case $m in
+   jan* )       m=1   ;;
+   feb* )       m=2   ;;
+   mar* )       m=3   ;;
+   apr* )       m=4   ;;
+   may* )       m=5   ;;
+   jun* )       m=6   ;;
+   jul* )       m=7   ;;
+   aug* )       m=8   ;;
+   sep* )       m=9   ;;
+   oct* )       m=10  ;;
+   nov* )       m=11  ;;
+   dec* )       m=12  ;;
+   * ) echo -e "Invalid Month\n"
+   esac
+   set `date` ; y=$6
+   cal $m $y
+done
+
+-------------------------------------------------------------------------------
+Ques 2
+
+#Write a shell script to modify the "cal" command to 
+display the calendars of the specified range of months.
+
+first=`echo $* | tr -s "." | cut -d"." -f1`
+last=`echo $* | tr -s "." | cut -d"." -f2`
+
+month1=`echo $first | tr '[a-z]' '[A-Z]'`
+
+case $month1 in
+JAN) m1=1;;
+FEB) m1=2;;
+MAR) m1=3;;
+APR) m1=4;;
+MAY) m1=5;;
+JUN) m1=6;;
+JUL) m1=7;;
+AUG) m1=8;;
+SEP) m1=9;;
+OCT) m1=10;;
+NOV) m1=11;;
+DEC) m1=12;;
+esac
+
+month2=`echo $last | tr '[a-z]' '[A-Z]'`
+
+
+case $month2 in
+JAN) m2=1;;
+FEB) m2=2;;
+MAR) m2=3;;
+APR) m2=4;;
+MAY) m2=5;;
+JUN) m2=6;;
+JUL) m2=7;;
+AUG) m2=8;;
+SEP) m2=9;;
+OCT) m2=10;;
+NOV) m2=11;;
+DEC) m2=12;;
+esac
+
+
+if [ $m1 -ge $m2 ]
+then
+ echo -e "Invalid Range of Month \n"
+else
+ set `date`
+ y=`echo $6`
+  for((i=m1;i<=m2;i++))
+   do
+    cal $i $y
+   done
+fi
+
+--------------------------------------------------------------------------------------
+
+Ques 3
+
+# Write a shell script to display the date in mm/dd/yy format .
+
+DATE=`date`
+
+month=`echo $DATE | tr -s " " | cut -d" " -f2 | tr '[A-Z]' '[a-z]'`
+case $month in
+jan* )       mm="01"   ;;		       
+feb* )       mm="02"   ;; 
+mar* )       mm="03"   ;;
+apr* )       mm="04"   ;;
+may* )       mm="05"   ;;
+jun* )       mm="06"   ;;
+jul* )       mm="07"   ;;
+aug* )       mm="08"   ;;
+sep* )       mm="09"   ;;
+oct* )       mm="10"  ;;
+nov* )       mm="11"  ;;
+dec* )       mm="12"  ;;
+   * )       echo -e "Invalid Month\n"
+esac
+
+dd=`date '+%d'`
+yy=`date '+%y'`
+
+
+echo -n "The date in mm/dd/yy format is given as:"
+echo "$mm/$dd/$yy"
+
+
+-----------------------------------------------------------------------------------------
+
+Ques 4
+
+#To display the sorted ouput of "who" command along with the total number of users
+
+nusers=`who | wc -l`
+
+echo "The sorted result of who command is as follows:"
+
+who | sort
+
+echo "----------------------------------------------"
+
+echo "The total number of users are : $nusers"
+
+-------------------------------------------------------------------------------------
+
+Ques 5
+# Using while loop to calculate the sum of all digits
+
+echo -n "Enter number : "
+read n
+ 
+sum=0
+ 
+# use while loop to caclulate the sum of all digits
+while [ $n -gt 0 ]
+do
+    ((rem=n % 10 )) # get Remainder 
+    ((n=n / 10 ))  # get next digit
+    ((sum=sum + rem )) # calculate sum of digit
+done
+echo  "Sum of all digit  is $sum"
+
+
+---------------------------------------------------------------------------------------
+
+Ques 6
+
+# Write ashell script to merge the contents of three files,
+ sort the contents and then display them page by page.
+ 
+echo -n "Enter filename1="
+read fname1
+echo -n "Enter filename2="
+read fname2
+echo -n "Enter filename3="
+read fname3
+if [ -f $fname1 -a -f $fname2 -a -f $fname3 ]
+then
+   sort $fname1 > t1
+   sort $fname2 > t2
+   sort $fname3 > t3
+   echo -e "The sorted contents are as follows"
+   sort -m t1 t2 t3 > sm.txt
+   rm t1 t2 t3
+else
+   echo "Files with this names does not exist"
+fi 
+
+cat sm.txt | more | less
+
+--------------------------------------------------------------------------------------
+
+Ques7
+
+# Write a shell script to find the power of a given number
+
+echo "Input number"
+read no
+echo "Input power"
+read power
+
+ans=1
+for ((counter=1;counter<=power;counter++))
+do
+        ((ans=ans*no))
+done
+
+echo "$no power of $power is $ans"
+
+------------------------------------------------------------------------------------
+
+Ques 8
+
+# Write a shell script to find the reverse of a number
+
+echo -n "Enter number : "
+read n
+ 
+rev=0
+ 
+# use while loop to caclulate the sum of all digits
+while [ $n -gt 0 ]
+do
+    ((rem=n % 10 )) # get Remainder 
+    ((n=n / 10 ))  # get next digit
+    ((rev=rev*10 + rem )) # calculate sum of digit
+done
+echo  "Reverse  is $rev"
+
+-------------------------------------------------------------------------------------
+
+Ques 9
+
+# Calculates factorial only if number is positive integer ( without using functions)
+	
+	fact=1                                           #Initialization
+	echo -n " Enter a num"
+	read n
+	if [ $n -ge 0 ]
+	then
+		while [ $n -ge 1 ]			#Condition check
+		do
+			fact=`expr $fact \* $n` 	# Calculation of factorial
+			n=`expr $n - 1`			#Updation
+		done
+
+		echo $fact | bc
+	else
+		echo " only positive integers accepted "
+	fi
+----------------------------------------------------------------------------------
+
+ques 10
+
+# Shell script to perform the tasks of basic calculator.
+
+n=1 
+echo -ne "\nDo you want to perform basic calculator (enter 0-9) "
+read n
+while [ $n -gt 0 ]
+do
+
+	#Input 2 numbers from the user
+	echo "Enter 2 numbers - "
+	read num1
+	read num2
+		
+	# menu for user
+        # Prints menu and asks user to enter a choice.
+	# Then, calls executes calculation .
+	
+echo -e "\nMenu :- "
+	echo "1, for addition"
+	echo "2, for subtraction"
+	echo "3, for division"
+	echo "4, for multiplication"
+	echo "5, for remainder"
+	echo -ne "\nEnter choice - "
+read ch
+				
+
+        # Locates user's choice in its list of available options and performs the required operation;
+        # if user's choice is found in the list, then, calculates and prints result; else, again asks user to enter right choice;
+       
+	case $ch in
+		1) result=`expr $num1 + $num2`;;
+		2) result=`expr $num1 - $num2`;;
+		3) result=`expr $num1 / $num2`;;
+		4) result=`expr $num1 \* $num2`;;
+		5) result=`expr $num1 % $num2`;;
+		*) echo -e "\nInavlid choice!!" 
+		   
+	esac
+	echo -e "\nResult is $result"
+	
+echo -ne "\n Do you want to perform basic calculator (enter 0-9)?"
+	read n		
+
+done
+
+----------------------------------------------------------------------------------------------------------
+
+ques 11 )
+
+# Shell script to perform the tasks of basic calculator.( with function )
+
+
+menu()
+{
+	# menu function:
+        # Prints menu and asks user to enter a choice.
+	# Then, calls run function.
+	echo -e "\nMenu :- "
+	echo "1, for addition"
+	echo "2, for subtraction"
+	echo "3, for division"
+	echo "4, for multiplication"
+	echo "5, for remainder"
+	echo -ne "\nEnter choice - "
+read ch
+run				#Calling run function
+}
+
+
+run()
+{
+	# run function:
+        # Locates user's choice in its list of available options and performs   	  the required operation;
+        # if user's choice is found in the list, then, calculates and prints		  result; else, again asks user to enter right choice;
+        # At last, calls continueornot function	
+	case $ch in
+		1) result=`expr $num1 + $num2`;;
+		2) result=`expr $num1 - $num2`;;
+		3) result=`expr $num1 / $num2`;;
+		4) result=`expr $num1 \* $num2`;;
+		5) result=`expr $num1 % $num2`;;
+		*) echo -e "\nInavlid choice!!" 
+		   menu
+	esac
+	echo -e "\nResult is $result"
+	continueornot			#Calling continueornot function
+}
+
+continueornot()
+{
+	# continueornot function:
+        # Asks users if he/she wishes to continue;
+	# If yes, then, it calls menu function
+	# If no, then, program exits.
+	echo -ne "\nDo you want to continue (y/n)?"
+	read reply
+	case $reply in
+		y* | Y* ) menu;;		
+		n* | N* ) exit
+	esac	
+}
+
+#Input 2 numbers from the user
+echo "Enter 2 numbers - "
+read num1
+read num2
+menu				#Calling menu function
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+ques 12) Shell script to compare two files.
+
+function compare()
+{
+	echo ""
+	cmp $fname1 $fname2
+	val=$?                # $? returns the status of the last finished command. Status 0 tells you that 				
+				   everything finished ok. In this case if 0 => files are same
+	if [ $val -eq 0 ]
+	#the files are same
+	then
+		echo -e "\nThe files are same."
+		rm $fname2
+		echo "$fname2 has been deleted."
+	else
+		echo -e "\nThe files are different. No action required."
+	fi
+	echo "-------------------------------------------------"
+}
+
+echo "-------------------------------------------------"
+
+echo -e "Enter first filename"
+read fname1
+echo -e "\nEnter second filename"
+read fname2
+
+
+
+if [ -e $fname1 -a -e $fname2 ]
+then
+	if [ "$fname1" = "$fname2" ]
+	then
+		echo -e "\nBoth files have the same name. Invalid input."
+		echo "-------------------------------------------------"
+	else
+compare
+fi
+else
+echo -e "\nOne or both files do not exist. Please try again. "
+
+echo "-------------------------------------------------"
+fi
+
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+ques 13 ) factorial using functions
+
+function factorial ()
+{
+   n=$1
+   fact=1
+   while [ $n -gt 1 ]
+   do
+     ((fact=fact*n))
+     ((n--)) 
+   done
+   echo $fact | bc
+}
+
+echo -n "Enter the number"
+read n
+factorial $n
+
+#ret=$?
+
+#echo "The factorial is $ret"
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+
+ques 18) to check if a number is armstrong number. (# Armstrong number is a number that is equal to sum its own digits; 
+each digit raised to the powerof number of digits. so, if there are3 digits in a number ... we raise each digit to 
+power of 3 and added to obtain the number . Ex : 153, 370 , 1634 #)
+
+echo "Enter a number: "
+read n
+
+temp=$n
+sum=0
+
+while [ $n -gt 0 ]
+do
+((rem=n%10))
+((sum=sum + rem*rem*rem))
+((n=n/10))
+done
+
+if [ $sum -eq $temp ]
+then
+echo "It is an Armstrong Number."
+else
+echo "It is not an Armstrong Number."
+fi
+  
+
+           
+
+
+
+
+
